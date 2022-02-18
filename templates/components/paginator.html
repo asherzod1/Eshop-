@@ -1,0 +1,15 @@
+{% load static %}
+<nav class="mt-4" aria-label="Page navigation sample">
+    <ul class="pagination">
+        {% if current_page != 1 %}
+            <li class="page-item"><a class="page-link paging" data-value="{{ current_page | add:-1 }}">Previous</a></li>
+        {% endif %}
+        {% for page in paginator.page_range %}
+            <li class="page-item {% if page == current_page %} active {% endif %}">
+                <a class="page-link paging" data-value="{{ page }}">{{ page }}</a></li>
+        {% endfor %}
+        {% if current_page != paginator.num_pages %}
+            <li class="page-item"><a class="page-link paging" data-value="{{ current_page | add:1 }}">Next</a></li>
+        {% endif %}
+    </ul>
+</nav>

@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+{% include '../layout/head.html' %}
+<body>
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-conten padding-y" style="min-height:84vh">
+
+<!-- ============================ COMPONENT LOGIN   ================================= -->
+	<div class="card mx-auto" style="max-width: 380px; margin-top:100px;">
+      <div class="card-body">
+      <h4 class="card-title mb-4">Sign in</h4>
+      <form method="post">
+          {% csrf_token %}
+          <div class="form-group">
+			 <input type="tel" class="form-control" name="phone_number" id="phone_number" pattern="+998-[0-9]{2}-[0-9]{3}-[0-9]{2}-[0-9]{2}" placeholder="+998-00-000-00-00" >
+          </div> <!-- form-group// -->
+          <div class="form-group">
+			<input type="password" class="form-control" name="password" id="password" placeholder="password">
+          </div> <!-- form-group// -->
+          
+          <div class="form-group">
+          	<a href="#" class="float-right">Forgot password?</a> 
+           
+          </div> <!-- form-group form-check .// -->
+          <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-block"> Login  </button>
+          </div> <!-- form-group// -->    
+      </form>
+      </div> <!-- card-body.// -->
+    </div> <!-- card .// -->
+
+     <p class="text-center mt-4">Don't have account? <a href="{% url 'register' %}">Sign up</a></p>
+     <br><br>
+<!-- ============================ COMPONENT LOGIN  END.// ================================= -->
+
+
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+</body>>
+</html>
