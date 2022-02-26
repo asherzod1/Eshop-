@@ -26,6 +26,7 @@ urlpatterns = [
     path('register/', register, name = 'register'),
     path('search/', search, name = 'search'),
     path('product/', include('product.urls')),
+    path('order/', include('order.urls')),
     path('', home, name = 'home'),
 ]
 

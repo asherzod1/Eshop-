@@ -2,7 +2,14 @@ from django.core.paginator import Paginator
 from django.shortcuts import render
 
 from product.models import Product, Category
+from utilits.utilits import get_order_count
 
+SORTING = {
+    'qimmat':'-price',
+    'arzon':'price',
+    'yangi':'-id',
+    'eski':'id'
+}
 
 def product_detail(request,id):
     product = Product.objects.get(id=id)
@@ -20,6 +27,7 @@ def store(request):
     max_price = (request.GET.get('max_price', None))
     paginator_page:str = request.GET.get('page', '1')
     per_page:str = request.GET.get('per-page',6)
+    sorting:str = (request.GET.get("sorting", "yangi"))
     if category:
         product_list = Product.objects.filter(category_id=category)
     else:
@@ -28,6 +36,7 @@ def store(request):
         product_list = Product.objects.filter(price__gte=min_price)
     if max_price:
         product_list = Product.objects.filter(price__lte=max_price)
+    product_list = product_list.order_by(SORTING[sorting])
     categories = Category.objects.all()
     paginator = Paginator(
         object_list=product_list,
@@ -35,6 +44,7 @@ def store(request):
 
     )
 
+    badge_count = get_order_count(request)
     product_list_page = paginator.get_page(paginator_page)
     paginator_page = int(paginator_page) if paginator_page.isdigit() else 1
     paginator_page = paginator_page if paginator_page<=paginator.num_pages else paginator.num_pages
@@ -46,6 +56,8 @@ def store(request):
             'categories': categories,
             'paginator' : paginator,
             'current_page' : int(paginator_page),
+            'sorting': sorting,
+            'badge_count': badge_count
         }
     )
 

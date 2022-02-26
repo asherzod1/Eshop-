@@ -19,3 +19,6 @@ class Product(models.Model):
             return self.image.url
         return ''
 
+    def __str__(self):
+        return self.name
+

@@ -108,6 +108,16 @@
                         <div class="form-inline">
                             <span class="mr-md-auto">{{ paginator.count }} Items found </span>
                             <div>
+                                 <span class="mr-md-auto">Saralash:</span>
+                                {% with p='yangi eski qimmat arzon' %}
+                                <select class="mr-2 form-control sorting">
+                                    {% for i in p.split %}
+                                    <option value="{{ i }}" {% if i == sorting %}selected{% endif %}>{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                                {% endwith %}
+                            </div>
+                            <div>
                                 <span class="mr-md-auto">Items per page:</span>
                                 {% with p='6 9 12' %}
                                 <select class="mr-2 form-control per-page">
@@ -144,7 +154,10 @@
         let new_url = set_params(url,"per-page",$(this).val())
         window.location.replace(new_url)
     })
-
+    $('.sorting').change( function (){
+        let new_url = set_params(url,"sorting",$(this).val())
+        window.location.replace(new_url)
+    })
     $('.paging').click(function (){
         let new_url = set_params(url,"page",$(this).data("value"))
         window.location.replace(new_url)
@@ -170,6 +183,14 @@
         }
         window.location.replace(new_url)
     })
+    {#ADD TO CARD#}
+    $('.add-to-cart').click(function (){
+        let product_id = ($(this).data("id"))
+        let data = {'product_id': product_id}
+        let url = '/order/add-cart/'
+        post_data(url, data)
+    })
+    {#END ADD TO CARD#}
     function set_params(url, param, value){
         let final_url = ''
         let path = url.split("?")[0]
@@ -197,8 +218,21 @@
             new_url = `${param}=${value}`
             final_url = path + "?" + new_url
         }
-        console.log(final_url)
         return final_url
+    }
+    function post_data(url, data){
+        $.ajax({
+            type:"POST",
+            url: url,
+            headers:{
+                'Content-Type':'application/json',
+                'X-CSRFToken':csrftoken
+            },
+            data: JSON.stringify(data),
+            success: function (response){
+                $('#badge').text(response.items_count)
+            }
+        })
     }
     </script>
 
